@@ -1,6 +1,6 @@
-CREATE DATABASE EXPENSE_TRACKERS;
-drop DATABASE EXPENSE_TRACKERS;
+DROP DATABASE EXPENSE_TRACKERS;
 
+CREATE DATABASE EXPENSE_TRACKERS;
 
 USE EXPENSE_TRACKERS ;
 
@@ -23,26 +23,30 @@ CREATE TABLE INCOME(
     FOREIGN KEY(User_Id) REFERENCES USERS(User_Id)
 );
 
-CREATE TABLE EXPENSES(
-    Expense_Id INT PRIMARY KEY ,
-    User_Id  INT NOT NULL,
-    Category VARCHAR (50),
-    Amount  INT NOT NULL,
-    Expense_date DATE NOT NULL,
-    Created_at DATETIME,
-    Updated_at DATETIME,
-    is_recurring BOOLEAN DEFAULT FALSE,
-    FOREIGN KEY(User_Id) REFERENCES USERS(User_Id)
+CREATE TABLE expenses (
+    id INT AUTO_INCREMENT PRIMARY KEY,      
+    Expense_Id INT NOT NULL,                 
+    User_Id INT NOT NULL,                   
+    Category VARCHAR(100),          
+    Amount DECIMAL(10, 2),          
+    Expense_date DATE,              
+    Type VARCHAR(50),                       
+    is_recurring BOOLEAN DEFAULT FALSE,     
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP 
 );
 
-CREATE TABLE BUDGETS(
-    Budget_id INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE budgets (
+    Budget_id INT PRIMARY KEY,
     User_Id INT NOT NULL,
-    Category VARCHAR (50),
-    Budget_limit INT NOT NULL,
-    Created_at DATETIME,
-    Updated_at DATETIME,
-    FOREIGN KEY(User_Id) REFERENCES USERS(User_Id)
+    Time_Frame VARCHAR(50) NOT NULL,
+    Tution_limit DECIMAL(10, 2) NOT NULL,
+    Rent_limit DECIMAL(10, 2) NOT NULL,
+    Groderies_limit DECIMAL(10, 2) NOT NULL,
+    Transport_Limit DECIMAL(10, 2) NOT NULL,
+    Entertainment_Limit DECIMAL(10, 2) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE NOTIFICATION(
@@ -64,8 +68,7 @@ CREATE TABLE REPORTS(
     FOREIGN KEY(User_ID) REFERENCES USERS(User_Id)
 );
 
-ALTER TABLE INCOME
-ADD CONSTRAINT check_frequency CHECK (frequency IN ('Weekly' or 'Monthly'));
+
 
 CREATE INDEX Expense_Date
 ON EXPENSES (Expense_date);

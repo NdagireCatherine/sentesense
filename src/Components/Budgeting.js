@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Pie } from "react-chartjs-2";
 import {
-    Chart,
-    ArcElement,
-    Tooltip,
-    Legend
+  Chart,
+  ArcElement,
+  Tooltip,
+  Legend
 } from 'chart.js';
+import { fetchBudgetData } from '../api/api'; // Import fetch function
+
 Chart.register(ArcElement, Tooltip, Legend);
 
 const Budgeting = () => {
@@ -19,6 +21,22 @@ const Budgeting = () => {
       { name: "Entertainment", limit: 0, spent: 0 },
     ],
   });
+
+  // Fetch the budget data from the API when the component mounts
+  useEffect(() => {
+    fetchBudgetData()
+      .then((data) => {
+        if (data) {
+          setBudgetData({
+            timeFrame: data.timeFrame,
+            categories: data.categories,
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Failed to fetch budget data:", error);
+      });
+  }, []);
 
   const handleTimeFrameChange = (e) => {
     setBudgetData((prev) => ({
@@ -165,4 +183,3 @@ const Budgeting = () => {
 };
 
 export default Budgeting;
-

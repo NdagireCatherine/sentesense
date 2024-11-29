@@ -2,9 +2,9 @@ const db = require('../Models/db');
 
 // Add Expense
 exports.addExpense = (req, res) => {
-    const { Expense_Id, User_Id, Category, Amount, Expense_date, Created_at, Updated_at } = req.body;
-    const query = 'INSERT INTO expenses (Expense_Id, User_Id, Category, Amount, Expense_date, Created_at, Updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)';
-    db.query(query, [Expense_Id, User_Id, Category, Amount, Expense_date, Created_at, Updated_at], (err, results) => {
+    const { Expense_Id, User_Id, Category, Amount, Expense_date, Type } = req.body;
+    const query = 'INSERT INTO expenses (Expense_Id, User_Id, Category, Amount, Expense_date, Type ) VALUES (?, ?, ?, ?, ?, ?)';
+    db.query(query, [Expense_Id, User_Id, Category, Amount, Expense_date, Type ], (err, results) => {
         if (err) return res.status(500).json({ message: 'Database error', error: err });
         res.status(201).json({ message: 'Expense added successfully' });
     });
