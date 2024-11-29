@@ -1,6 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
 
 const SignIn = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setSuccess('');
+
+    try {
+      const response = await fetch('http://localhost:5000/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to sign in');
+      }
+
+      const data = await response.json();
+      // Assuming the API returns a token
+      localStorage.setItem('token', data.token); // Store the token in local storage
+      setSuccess('Sign in successful!');
+      // Redirect or update state as needed
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
   const styles = {
     container: {
       display: "flex",
@@ -60,16 +94,22 @@ const SignIn = () => {
     <div style={styles.container}>
       <div style={styles.formContainer}>
         <h1 style={styles.header}>Sign In</h1>
-        <form>
+        <form onSubmit={handleSubmit}>
           <input
-            type="text"
-            placeholder="Username or Email"
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             style={styles.input}
+            required
           />
           <input
             type="password"
             placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             style={styles.input}
+            required
           />
           <button
             type="submit"
@@ -84,6 +124,8 @@ const SignIn = () => {
             Sign In
           </button>
         </form>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+        {success && <p style={{ color: 'green' }}>{success}</p>}
       </div>
     </div>
   );

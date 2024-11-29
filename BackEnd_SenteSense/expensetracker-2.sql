@@ -88,4 +88,3 @@ SELECT * FROM users;
 
 INSERT INTO income (Income_Id, User_Id, Source_of_Income, frequency, Amount_Earned, Income_Date ) VALUES (NULL, 3, 'Salary', 'Monthly', 2000, '2023-11-28')
 
-ALTER TABLE income DROP CONSTRAINT check_frequency;
