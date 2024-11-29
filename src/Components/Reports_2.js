@@ -1,11 +1,10 @@
-import { BackgroundImage } from "@mantine/core";
 import React, { useState } from "react";
 
 const Repo = () => {
   const initialData = {
-    weekly: { income: 1000000, expenses: { Tuition: 200000, Rent: 150000, Groceries: 50000, Transport: 60000, Entertainment: 70000 } },
-    monthly: { income: 4000000, expenses: { Tuition: 800000, Rent: 600000, Groceries: 500000, Transport: 600000, Entertainment: 700000 } },
-    term: { income: 12000000, expenses: { Tuition: 2400000, Rent: 1800000, Groceries: 5100000, Transport: 2460000, Entertainment: 1270000 } },
+    weekly: { income: 1000000, expenses: { Tuition: 200000, Rent: 150000, Groceries: 100000, Transport: 120000, Entertainment: 200000 } },
+    monthly: { income: 4000000, expenses: { Tuition: 800000, Rent: 600000, Groceries: 200000, Transport: 150000, Entertainment: 180000 } },
+    term: { income: 12000000, expenses: { Tuition: 2400000, Rent: 1800000, Groceries: 18500000, Transport: 650000, Entertainment: 21000000 } },
   };
 
   const [data, setData] = useState(initialData);
@@ -45,7 +44,6 @@ const Repo = () => {
       background: "#f5f5f5",
       borderRadius: "8px",
       boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
-      BackgroundImage:
     },
     header: {
       textAlign: "center",
@@ -159,5 +157,6 @@ const Repo = () => {
 };
 
 export default Repo;
+
 
 
