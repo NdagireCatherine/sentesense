@@ -1,90 +1,184 @@
-//script.js
-document.addEventListener("DOMContentLoaded", () => {
-    const expenseForm = document.getElementById("expense-form");
-    const expenseList = document.getElementById("expense-list");
-    const totalAmount = document.getElementById("total-amount");
-    const filterCategory = document.getElementById("filter-category");
+import React, { useState } from "react";
+import { Bar } from "react-chartjs-2";
+import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend } from "chart.js";
 
-    let expenses = [];
+ChartJS.register(BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend);
 
-    expenseForm.addEventListener("submit", (e) => {
-        e.preventDefault();
+const ExpenseTracker = () => {
+  const [expenses, setExpenses] = useState([]);
+  const [category, setCategory] = useState("");
+  const [amount, setAmount] = useState("");
+  const [frequency, setFrequency] = useState("");
+  const [view, setView] = useState("daily");
 
-        const name = document.getElementById("expense-name").value;
-        const amount = parseFloat(document.getElementById("expense-amount").value);
-        const category = document.getElementById("expense-category").value;
-        const date = document.getElementById("expense-date").value;
+  const categories = ["Tuition", "Rent", "Groceries", "Transport", "Entertainment"];
 
-        const expense = {
-            id: Date.now(),
-            name,
-            amount,
-            category,
-            date
-        };
-
-        expenses.push(expense);
-        displayExpenses(expenses);
-        updateTotalAmount();
-
-        expenseForm.reset();
-    });
-
-    expenseList.addEventListener("click", (e) => {
-        if (e.target.classList.contains("delete-btn")) {
-            const id = parseInt(e.target.dataset.id);
-            expenses = expenses.filter(expense => expense.id !== id);
-            displayExpenses(expenses);
-            updateTotalAmount();
-        }
-
-        if (e.target.classList.contains("edit-btn")) {
-            const id = parseInt(e.target.dataset.id);
-            const expense = expenses.find(expense => expense.id === id);
-
-            document.getElementById("expense-name").value = expense.name;
-            document.getElementById("expense-amount").value = expense.amount;
-            document.getElementById("expense-category").value = expense.category;
-            document.getElementById("expense-date").value = expense.date;
-
-            expenses = expenses.filter(expense => expense.id !== id);
-            displayExpenses(expenses);
-            updateTotalAmount();
-        }
-    });
-
-    filterCategory.addEventListener("change", (e) => {
-        const category = e.target.value;
-        if (category === "All") {
-            displayExpenses(expenses);
-        } else {
-            const filteredExpenses = expenses.filter(expense => expense.category === category);
-            displayExpenses(filteredExpenses);
-        }
-    });
-
-    function displayExpenses(expenses) {
-        expenseList.innerHTML = "";
-        expenses.forEach(expense => {
-            const row = document.createElement("tr");
-
-            row.innerHTML = `
-                <td>${expense.name}</td>
-                <td>$${expense.amount.toFixed(2)}</td>
-                <td>${expense.category}</td>
-                <td>${expense.date}</td>
-                <td>
-                    <button class="edit-btn" data-id="${expense.id}">Edit</button>
-                    <button class="delete-btn" data-id="${expense.id}">Delete</button>
-                </td>
-            `;
-
-            expenseList.appendChild(row);
-        });
+  // Add new expense
+  const handleAddExpense = () => {
+    if (!category || !amount) {
+      alert("Please select a category and enter an amount.");
+      return;
     }
 
-    function updateTotalAmount() {
-        const total = expenses.reduce((sum, expense) => sum + expense.amount, 0);
-        totalAmount.textContent = total.toFixed(2);
-    }
-});
+    const newExpense = {
+      id: Date.now(),
+      category,
+      amount: parseFloat(amount),
+      frequency: frequency || "One-time",
+      date: new Date(),
+    };
+
+    setExpenses([...expenses, newExpense]);
+    setCategory("");
+    setAmount("");
+    setFrequency("");
+  };
+
+  // Filter expenses based on the selected time frame
+  const getFilteredExpenses = () => {
+    const now = new Date();
+    return expenses.filter((expense) => {
+      const diff = (now - expense.date) / (1000 * 60 * 60 * 24); // Days difference
+      return view === "daily"
+        ? diff < 1
+        : view === "weekly"
+        ? diff < 7
+        : diff < 30;
+    });
+  };
+
+  // Data for the chart
+  const chartData = {
+    labels: categories,
+    datasets: [
+      {
+        label: "Expenses",
+        data: categories.map(
+          (cat) =>
+            getFilteredExpenses().filter((expense) => expense.category === cat).reduce((sum, exp) => sum + exp.amount, 0)
+        ),
+        backgroundColor: ["#007bff", "#28a745", "#ffc107", "#17a2b8", "#6c757d"],
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  return (
+    <div style={styles.container}>
+      <h1 style={styles.title}>Expense Tracker</h1>
+
+      {/* Form */}
+      <div style={styles.form}>
+        <select value={category} onChange={(e) => setCategory(e.target.value)} style={styles.input}>
+          <option value="">Select Category</option>
+          {categories.map((cat) => (
+            <option key={cat} value={cat}>
+              {cat}
+            </option>
+          ))}
+        </select>
+        <input
+          type="number"
+          placeholder="Amount"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+          style={styles.input}
+        />
+        <select value={frequency} onChange={(e) => setFrequency(e.target.value)} style={styles.input}>
+          <option value="">One-time</option>
+          <option value="Recurring">Recurring</option>
+        </select>
+        <button onClick={handleAddExpense} style={styles.button}>
+          Add Expense
+        </button>
+      </div>
+
+      {/* Summary */}
+      <div style={styles.summary}>
+        <button onClick={() => setView("daily")} style={view === "daily" ? styles.activeButton : styles.summaryButton}>
+          Daily
+        </button>
+        <button onClick={() => setView("weekly")} style={view === "weekly" ? styles.activeButton : styles.summaryButton}>
+          Weekly
+        </button>
+        <button onClick={() => setView("monthly")} style={view === "monthly" ? styles.activeButton : styles.summaryButton}>
+          Monthly
+        </button>
+      </div>
+
+      {/* Chart */}
+      <div style={styles.chartContainer}>
+        <Bar data={chartData} options={{ responsive: true, plugins: { legend: { position: "top" } } }} />
+      </div>
+    </div>
+  );
+};
+
+const styles = {
+  container: {
+    maxWidth: "800px",
+    margin: "2rem auto",
+    padding: "1.5rem",
+    borderRadius: "12px",
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+    backgroundColor: "#fff",
+    fontFamily: "Arial, sans-serif",
+  },
+  title: {
+    textAlign: "center",
+    fontSize: "2rem",
+    color: "#333",
+    marginBottom: "1.5rem",
+    borderBottom: "2px solid #007bff",
+    paddingBottom: "0.5rem",
+  },
+  form: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "1rem",
+    marginBottom: "2rem",
+  },
+  input: {
+    padding: "0.8rem",
+    fontSize: "1rem",
+    border: "1px solid #ddd",
+    borderRadius: "6px",
+  },
+  button: {
+    backgroundColor: "#007bff",
+    color: "#fff",
+    padding: "0.8rem",
+    fontSize: "1rem",
+    border: "none",
+    borderRadius: "6px",
+    cursor: "pointer",
+    transition: "background-color 0.3s",
+  },
+  summary: {
+    display: "flex",
+    justifyContent: "center",
+    gap: "1rem",
+    marginBottom: "2rem",
+  },
+  summaryButton: {
+    backgroundColor: "#f8f9fa",
+    color: "#333",
+    padding: "0.5rem 1rem",
+    border: "1px solid #ddd",
+    borderRadius: "6px",
+    cursor: "pointer",
+  },
+  activeButton: {
+    backgroundColor: "#007bff",
+    color: "#fff",
+    padding: "0.5rem 1rem",
+    border: "none",
+    borderRadius: "6px",
+    cursor: "pointer",
+  },
+  chartContainer: {
+    marginTop: "2rem",
+  },
+};
+
+export default ExpenseTracker;
