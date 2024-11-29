@@ -3,6 +3,7 @@ import Home from './Pages/Home'
 import Income from './Pages/Income'
 import Expenses from './Pages/Expenses'
 import Budgeting from './Pages/Budgeting'
+import Reports from './Pages/Reports'
 
 export default function App(){
   return(
@@ -14,7 +15,7 @@ export default function App(){
           <Route path="/Income" element={<Income/>}/>
           <Route path="/Expenses" element={<Expenses/>}/>
           <Route path="/Budgeting" element={<Budgeting/>}/>
-          
+          <Route path="/Reports" element={<Reports/>}/>
         </Routes>
       </BrowserRouter>
     </div>
