@@ -13,7 +13,7 @@ export default function Navbar() {
                         <a href="/SignIn">Sign In</a>
                     </li>
                     <li>
-                        <a href="/Home">Home</a>
+                        <a href="/Dashboard">Home</a>
                     </li>
                     <li>
                         <a href="/Income">Income</a>
