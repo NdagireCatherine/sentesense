@@ -10,9 +10,6 @@ export default function Navbar() {
                 </div>
                 <ul className='nav-link'>
                     <li>
-                        <a href="/SignIn">Sign In</a>
-                    </li>
-                    <li>
                         <a href="/Dashboard">Home</a>
                     </li>
                     <li>

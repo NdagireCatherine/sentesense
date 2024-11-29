@@ -126,6 +126,13 @@ const SignUp = () => {
             onFocus={(e) => Object.assign(e.target.style, styles.inputFocus)}
             onBlur={(e) => Object.assign(e.target.style, styles.input)}
           />
+          <input
+            type="text"
+            placeholder="Password"
+            style={styles.input}
+            onFocus={(e) => Object.assign(e.target.style, styles.inputFocus)}
+            onBlur={(e) => Object.assign(e.target.style, styles.input)}
+          />
           <button
             type="submit"
             style={styles.button}

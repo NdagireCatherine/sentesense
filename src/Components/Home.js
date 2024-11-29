@@ -278,6 +278,15 @@ const Home = () => {
         </button>
       </section>
 
+      <section className="get-started-section">
+        <button
+          className="get-started-btn"
+          onClick={() => navigate("/SignIn")}
+        >
+          Sign In
+        </button>
+      </section>
+
       {/* Footer Section */}
       <footer className="footer-section">
         <h3>About Us</h3>
@@ -287,7 +296,7 @@ const Home = () => {
         </p>
         <h3>Contact Us</h3>
         <p>Email: support@sentesense.com</p>
-        <p>Phone: +1 (555) 123-4567</p>
+        <p>Phone: +256 111 234234</p>
       </footer>
     </div>
   );

@@ -8,7 +8,24 @@ import SignIn from './Pages/SignIn'
 import SignUp from './Pages/SignUp'
 import Dashboard from './Pages/Dashoard'
 
+
 export default function App(){
+  const appStyle = {
+    backgroundImage: "url('https://github.com/NdagireCatherine/sentesense/blob/master/trend.jpg')", // Replace with your image URL
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    minHeight: "100vh",
+    color: "white", // Optional: Ensures text is readable
+    margin: 0,
+    padding: 0,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  };
+
+
   return(
     <div>
       <BrowserRouter>
