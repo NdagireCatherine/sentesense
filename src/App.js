@@ -4,6 +4,8 @@ import Income from './Pages/Income'
 import Expenses from './Pages/Expenses'
 import Budgeting from './Pages/Budgeting'
 import Reports from './Pages/Reports'
+import SignIn from './Pages/SignIn'
+import SignUp from './Pages/SignUp'
 
 export default function App(){
   return(
@@ -16,6 +18,8 @@ export default function App(){
           <Route path="/Expenses" element={<Expenses/>}/>
           <Route path="/Budgeting" element={<Budgeting/>}/>
           <Route path="/Reports" element={<Reports/>}/>
+          <Route path="/SignIn" element={<SignIn/>}/>
+          <Route path="/SignUp" element={<SignUp/>}/>
         </Routes>
       </BrowserRouter>
     </div>
