@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend } from "chart.js";
 
@@ -12,6 +12,22 @@ const ExpenseTracker = () => {
   const [view, setView] = useState("daily");
 
   const categories = ["Tuition", "Rent", "Groceries", "Transport", "Entertainment"];
+  const userId = 1;
+  
+  useEffect(() => {
+    const fetchExpenses = async () => {
+      try {
+        const response = await fetch(`/api/expenses?user_id=${userId}`);
+        const data = await response.json();
+        setExpenses(data);
+      } catch (error) {
+        console.error("Error fetching expenses:", error);
+      }
+    };
+
+    fetchExpenses();
+  }, []);
+
 
   // Add new expense
   const handleAddExpense = () => {
