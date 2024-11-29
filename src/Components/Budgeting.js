@@ -1,67 +1,168 @@
-import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
-import { Button, TextInput } from "@mantine/core";
-import HistoryContext from "../store/HistoryContext";
-import CategoriesContext from "../store/CategoriesContext";
+import React, { useState } from "react";
+import { Pie } from "react-chartjs-2";
+import {
+    Chart,
+    ArcElement,
+    Tooltip,
+    Legend
+} from 'chart.js';
+Chart.register(ArcElement, Tooltip, Legend);
 
-const AddToBudget = () => {
-  const { addCategory } = useContext(CategoriesContext);
-  const { addHistoryElement } = useContext(HistoryContext);
+const Budgeting = () => {
+  const [budgetData, setBudgetData] = useState({
+    timeFrame: "week",
+    categories: [
+      { name: "Tuition", limit: 0, spent: 0 },
+      { name: "Rent", limit: 0, spent: 0 },
+      { name: "Groceries", limit: 0, spent: 0 },
+      { name: "Transport", limit: 0, spent: 0 },
+      { name: "Entertainment", limit: 0, spent: 0 },
+    ],
+  });
 
-  const [label, setLabel] = useState("");
-  const [value, setValue] = useState(0);
-  const navigate = useNavigate();
+  const handleTimeFrameChange = (e) => {
+    setBudgetData((prev) => ({
+      ...prev,
+      timeFrame: e.target.value,
+    }));
+  };
+
+  const handleLimitChange = (index, value) => {
+    const updatedCategories = [...budgetData.categories];
+    updatedCategories[index].limit = parseFloat(value) || 0;
+    setBudgetData((prev) => ({
+      ...prev,
+      categories: updatedCategories,
+    }));
+  };
+
+  const chartData = {
+    labels: budgetData.categories.map((cat) => cat.name),
+    datasets: [
+      {
+        label: "Budget Allocation",
+        data: budgetData.categories.map((cat) => cat.limit),
+        backgroundColor: ["#4CAF50", "#2196F3", "#FFC107", "#FF5722"],
+        hoverBackgroundColor: ["#66BB6A", "#42A5F5", "#FFD54F", "#FF7043"],
+      },
+    ],
+  };
+
+  const progressBarStyle = (value, max) => ({
+    width: `${(value / max) * 100}%`,
+    height: "100%",
+    backgroundColor: value > max ? "#FF4C4C" : "#4CAF50",
+    borderRadius: "10px",
+  });
+
+  const appStyle = {
+    fontFamily: "Arial, sans-serif",
+    margin: "20px auto",
+    maxWidth: "600px",
+    backgroundColor: "#f9f9f9",
+    padding: "20px",
+    borderRadius: "8px",
+    boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+  };
+
+  const headingStyle = {
+    textAlign: "center",
+    color: "#333",
+    fontWeight: "bold",
+    marginBottom: "20px",
+  };
+
+  const formStyle = {
+    marginBottom: "20px",
+    padding: "15px",
+    border: "1px solid #ddd",
+    borderRadius: "8px",
+    backgroundColor: "#fff",
+  };
+
+  const inputStyle = {
+    width: "100%",
+    padding: "10px",
+    marginBottom: "10px",
+    border: "1px solid #ccc",
+    borderRadius: "4px",
+  };
+
+  const selectStyle = {
+    ...inputStyle,
+    marginBottom: "15px",
+  };
+
+  const buttonStyle = {
+    display: "block",
+    width: "100%",
+    padding: "10px",
+    backgroundColor: "#2196F3",
+    color: "#fff",
+    border: "none",
+    borderRadius: "4px",
+    fontWeight: "bold",
+    cursor: "pointer",
+  };
+
   return (
-    <div>
-      <TextInput
-        onChange={(e) => setLabel(e.currentTarget.value)}
-        mt={20}
-        size="md"
-        w="40%"
-        placeholder="Ex: Christmas bonus"
-        label="Label"
-        withAsterisk
-      />
-      <TextInput
-        onChange={(e) => setValue(Number.parseFloat(e.currentTarget.value))}
-        mt={20}
-        size="md"
-        w="40%"
-        placeholder="Ex: 3000"
-        label="Amount"
-        withAsterisk
-      />
-      <Button
-        mt={20}
-        onClick={() => {
-          // Checks if the user input is valid
-          if (label === "" || value <= 0 || Number.isNaN(value)) {
-            alert(
-              "Invalid Entries. Make sure the label is not empty and the amount is greater than zero."
-            );
-          } else {
-            addCategory({
-              label: "Budget",
-              id: crypto.randomUUID(),
-              amount: value,
-            });
-            // navigate to home page
-            navigate("/");
-            addHistoryElement({
-              label: label,
-              amount: value,
-              id: crypto.randomUUID(),
-              type: "Budget",
-              dateCreated: "",
-              category: "Budget",
-            });
-          }
-        }}
-      >
-        Add To Budget
-      </Button>
+    <div style={appStyle}>
+      <h1 style={headingStyle}>Student Budget Tracker</h1>
+
+      <form style={formStyle}>
+        <label>Set Time Frame:</label>
+        <select
+          value={budgetData.timeFrame}
+          onChange={handleTimeFrameChange}
+          style={selectStyle}
+        >
+          <option value="week">Week</option>
+          <option value="month">Month</option>
+          <option value="term">Term</option>
+        </select>
+        {budgetData.categories.map((category, index) => (
+          <div key={index}>
+            <label>
+              {category.name} Limit (UGX):
+            </label>
+            <input
+              type="number"
+              value={category.limit}
+              onChange={(e) => handleLimitChange(index, e.target.value)}
+              style={inputStyle}
+            />
+          </div>
+        ))}
+        <button type="button" style={buttonStyle}>
+          Update Budget
+        </button>
+      </form>
+
+      <h2 style={headingStyle}>Budget Overview</h2>
+      <Pie data={chartData} />
+      {budgetData.categories.map((category, index) => (
+        <div key={index} style={{ marginBottom: "20px" }}>
+          <h3>{category.name}</h3>
+          <div
+            style={{
+              width: "100%",
+              height: "20px",
+              borderRadius: "10px",
+              backgroundColor: "#e0e0e0",
+              marginBottom: "5px",
+            }}
+          >
+            <div style={progressBarStyle(category.spent, category.limit)}></div>
+          </div>
+          <p>
+            Spent: <strong>UGX {category.spent}</strong> /{" "}
+            <strong>UGX {category.limit}</strong>
+          </p>
+        </div>
+      ))}
     </div>
   );
 };
 
-export default AddToBudget;
+export default Budgeting;
+
