@@ -3,7 +3,7 @@ const db = require('../Models/db');
 // Add Budget
 const addBudget = (req, res) => {
     const { Budget_id, User_Id, Time_Frame, Tution_limit,Rent_limit, Groderies_limit, Transport_Limit, Entertainment_Limit } = req.body;
-    const query = 'INSERT INTO budgets (Budget_id, User_Id, Time_Frame, Tution_limit,Rent_limit, Groderies_limit, Transport_Limit, Entertainment_Limit  ) VALUES (?, ?, ?, ?, ?, ?, ?)';
+    const query = 'INSERT INTO budgets (Budget_id, User_Id, Time_Frame, Tution_limit,Rent_limit, Groderies_limit, Transport_Limit, Entertainment_Limit,  created_at, updated_at  ) VALUES (?, ?, ?, ?, ?, ?, ?,?,? )';
     db.query(query, [ Budget_id, User_Id, Time_Frame, Tution_limit,Rent_limit, Groderies_limit, Transport_Limit, Entertainment_Limit ], (err, results) => {
         if (err) {return res.status(500).json({ message: 'Database error', error: err });
     }else {res.status(201).json({ message: 'Budget added successfully' });}
