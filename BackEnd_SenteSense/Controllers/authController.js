@@ -3,13 +3,13 @@ const db = require('../Models/db');
 
 // Register User
 const registerUser = (req, res) => {
-  const {User_Id, Name, Email, Password } = req.body;
+  const {User_Id, FirstName, LastName, PreferredUserName, Email, Password } = req.body;
 
   //try {
     //const hashedPassword = bcrypt.hash(Password, 10);
-    const query = 'INSERT INTO users (User_Id, Name, Email, Password) VALUES (?, ?, ?, ?)';
+    const query = 'INSERT INTO users (User_Id, FirstName, LastName, PreferredUserName Email, Password) VALUES (?, ?, ?, ?)';
 
-    db.query(query, [User_Id, Name, Email, Password], (err, results) => {
+    db.query(query, [User_Id, FirstName, LastName, PreferredUserName, Email, Password], (err, results) => {
       if (err) {
         if (err.code === 'ER_DUP_ENTRY') {
           return res.status(400).json({ message: 'Email already exists' });
