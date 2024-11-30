@@ -3,8 +3,7 @@ import Box from '@mui/material/Box';
 import { styled, ThemeProvider, createTheme } from '@mui/material/styles';
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
+import ListItemButton from '@mui/material/ListItemButton'; // ListItem is not needed
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Paper from '@mui/material/Paper';
@@ -50,7 +49,7 @@ export default function ProfileDropdown() {
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-        setAvatar(reader.result);
+        setAvatar(reader.result);  // Set the avatar image as base64 data
       };
       reader.readAsDataURL(file);
     }
@@ -84,7 +83,7 @@ export default function ProfileDropdown() {
         <Paper elevation={2} sx={{ width: 256 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', p: 2 }}>
             <Avatar
-              src={avatar}
+              src={avatar || '/default-avatar.png'} // Default avatar fallback
               alt="User Avatar"
               sx={{ width: 56, height: 56, marginRight: 2 }}
             />
@@ -103,6 +102,7 @@ export default function ProfileDropdown() {
               </Tooltip>
             </label>
           </Box>
+
           <FireNav component="nav" disablePadding>
             <ListItemButton
               onClick={() => setProfileOpen(!profileOpen)}
@@ -126,6 +126,7 @@ export default function ProfileDropdown() {
                 }}
               />
             </ListItemButton>
+
             {profileOpen &&
               profileData.map((item) => (
                 <ListItemButton
@@ -162,4 +163,4 @@ export default function ProfileDropdown() {
       </ThemeProvider>
     </Box>
   );
-}n
+}
