@@ -2,9 +2,9 @@ const db = require('../Models/db');
 
 // Add Income
 exports.addIncome = (req, res) => {
-    const { Income_Id, User_Id, Source_of_Income, frequency, Amount_Earned, Income_Date  } = req.body;
-    const query = 'INSERT INTO income (Income_Id, User_Id, Source_of_Income, frequency, Amount_Earned, Income_Date ) VALUES (?, ?, ?, ?, ?, ?)';
-    db.query(query, [Income_Id, User_Id, Source_of_Income, frequency, Amount_Earned, Income_Date ], (err, results) => {
+    const { Income_Id, User_Id, Source_of_Income, frequency, Income_Date  } = req.body;
+    const query = 'INSERT INTO income (Income_Id, User_Id, Source_of_Income, frequency, Income_Date ) VALUES (?, ?, ?, ?, ?, ?)';
+    db.query(query, [Income_Id, User_Id, Source_of_Income, frequency, Income_Date ], (err, results) => {
         if (err) return res.status(500).json({ message: 'Database error', error: err });
         res.status(201).json({ message: 'Income added successfully' });
     });

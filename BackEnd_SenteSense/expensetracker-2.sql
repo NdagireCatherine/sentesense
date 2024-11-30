@@ -12,15 +12,15 @@ CREATE TABLE Users (
     Password VARCHAR(255)
 );
 
-CREATE TABLE INCOME(
-    Income_Id INT AUTO_INCREMENT PRIMARY KEY,
-    User_Id    INT NOT NULL,
-    Source_of_Income VARCHAR (255),
-    frequency VARCHAR(255),
-    Amount_Earned  INT NOT NULL,
-    Income_Date  DATE NOT NULL,
-    is_recurring BOOLEAN DEFAULT FALSE,
-    FOREIGN KEY(User_Id) REFERENCES USERS(User_Id)
+CREATE TABLE INCOME (
+    Income_Id INT AUTO_INCREMENT PRIMARY KEY,          
+    User_Id INT NOT NULL,                               
+    Source_of_Income VARCHAR(255) NOT NULL,
+    Amount_Earned  DECIMAL(10, 2),            
+    Frequency ENUM('One-time', 'Recurring'),  
+    Income_Date DATE NOT NULL,                          
+    Is_Recurring BOOLEAN DEFAULT FALSE,                 
+    FOREIGN KEY (User_Id) REFERENCES USERS(User_Id)    
 );
 
 CREATE TABLE expenses (
@@ -87,5 +87,89 @@ VALUES
 
 SELECT * FROM users;
 
-INSERT INTO income (Income_Id, User_Id, Source_of_Income, frequency, Amount_Earned, Income_Date ) VALUES (NULL, 3, 'Salary', 'Monthly', 2000, '2023-11-28')
+INSERT INTO income (Income_Id, User_Id, Source_of_Income, Amount_Earned, frequency, Income_Date ) VALUES (NULL, 3, 'Salary', 2000, 'Recurring', '2023-11-28')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

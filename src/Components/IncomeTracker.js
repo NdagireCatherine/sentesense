@@ -1,12 +1,36 @@
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
+import { fetchIncomeData,AddIncomeData } from "../api/api";
 const IncomeTracker = () => {
   const [incomeSources, setIncomeSources] = useState([]);
   const [source, setSource] = useState("");
   const [amount, setAmount] = useState("");
   const [frequency, setFrequency] = useState("");
   const [totalIncome, setTotalIncome] = useState(0);
+  useEffect(() => {
+    const loadIncomeData = async () => {
+      try {
+        const data = await fetchIncomeData();
+        setIncomeSources(data);
+        const total = data.reduce((sum, income) => sum + income.amount, 0);
+        setTotalIncome(total);
+      } catch (error) {
+        console.error("Failed to load income data:", error);
+      }
+    };
 
+    loadIncomeData();
+  }, []);
+
+  const AddIncome = (newIncome) => {
+    console.log("New income", newIncome);
+    AddIncomeData(newIncome)
+      .then((response) => {
+        console.log("Response", response);
+      })
+      .catch((error) => {
+        console.error("Failed to add income:", error);
+      });
+  };
   // Add a new income source
   const handleAddIncome = () => {
     if (!source || !amount) {
@@ -24,6 +48,7 @@ const IncomeTracker = () => {
 
     setIncomeSources([...incomeSources, newIncome]);
     setTotalIncome(totalIncome + parseFloat(amount));
+    AddIncome(newIncome);
     setSource("");
     setAmount("");
     setFrequency("");
@@ -49,7 +74,11 @@ const IncomeTracker = () => {
           onChange={(e) => setAmount(e.target.value)}
           style={styles.input}
         />
-        <select value={frequency} onChange={(e) => setFrequency(e.target.value)} style={styles.input}>
+        <select
+          value={frequency}
+          onChange={(e) => setFrequency(e.target.value)}
+          style={styles.input}
+        >
           <option value="">One-time</option>
           <option value="Recurring">Recurring</option>
         </select>
