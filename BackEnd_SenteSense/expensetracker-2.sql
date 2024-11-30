@@ -4,12 +4,13 @@ CREATE DATABASE EXPENSE_TRACKERS;
 
 USE EXPENSE_TRACKERS ;
 
-CREATE TABLE USERS(
-    User_id INT AUTO_INCREMENT PRIMARY KEY,
-    Name VARCHAR(100) ,
-    Email VARCHAR(255),
+CREATE TABLE Users (
+    User_Id INT PRIMARY KEY, 
+    FirstName VARCHAR(50),
+    LastName VARCHAR(50),
+    PreferredUserName VARCHAR(50) UNIQUE NOT NULL,
+    Email VARCHAR(100) UNIQUE NOT NULL,
     Password VARCHAR(255)
-    
 );
 
 CREATE TABLE INCOME(
@@ -78,10 +79,11 @@ ON EXPENSES(User_Id);
 
 SHOW TABLES; 
 
-INSERT INTO USERS (User_Id, Name, Email, Password)
-VALUES (001,'Emmanuel Magomu','ehmahmagomu7@gmail.com',24680),
-       (002,'Uwase Shantel','shantel@gmail.com','f00d'),
-       (003,'Cathy Nasikye','cathy@gmail.com','c@thy');
+INSERT INTO Users (User_Id, FirstName, LastName, PreferredUserName, Email, Password)
+VALUES 
+    (1, 'Emmanuel', 'Magomu', 'emmagomu', 'ehmahmagomu7@gmail.com', 'hashed_password_1'),
+    (2, 'Uwase', 'Shantel', 'uwaseshantel', 'shantel@gmail.com', 'hashed_password_2'),
+    (3, 'Cathy', 'Nasikye', 'cathyn', 'cathy@gmail.com', 'hashed_password_3');
 
 
 SELECT * FROM users;
