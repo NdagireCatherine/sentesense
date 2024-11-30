@@ -95,7 +95,7 @@ const Budgeting = () => {
     padding: "15px",
     border: "1px solid #ddd",
     borderRadius: "8px",
-    backgroundColor: "#fff",
+    backgroundColor:"#fff",
   };
 
   const inputStyle = {

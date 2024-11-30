@@ -9,7 +9,7 @@ a{
 }
 
 header{
-  background: #fff;
+  background: #396ab3;
   box-shadow: 0 0 5px ;
   padding: 1rem 0rem;
 }
@@ -28,7 +28,7 @@ header{
 }
 
 .container nav .logo{
-  color: #212a3c;
+  color: #a8e2ee;
   font-size: 1.2rem;
   cursor: pointer;
 }
@@ -43,7 +43,7 @@ header{
 }
 
 .container ul li a{
-  color: #212a3c;
+  color: #a8e2ee;
   font-size: 1.3rem;
   padding: 0.7rem 1 rem;
   display: block;
@@ -52,5 +52,5 @@ header{
 }
 
 .container ul li a:hover{
-  background-color: #ecf0f1;
+  background-color: #030d10;
 }
