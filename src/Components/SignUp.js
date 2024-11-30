@@ -1,6 +1,8 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
+    const navigate = useNavigate();
   const styles = {
     container: {
       display: "flex",
@@ -121,7 +123,7 @@ const SignUp = () => {
           />
           <input
             type="email"
-            placeholder="Email Address"
+            placeholder="Email"
             style={styles.input}
             onFocus={(e) => Object.assign(e.target.style, styles.inputFocus)}
             onBlur={(e) => Object.assign(e.target.style, styles.input)}
@@ -142,6 +144,7 @@ const SignUp = () => {
             onMouseOut={(e) =>
               (e.target.style.backgroundColor = styles.button.backgroundColor)
             }
+            onClick={() => navigate("/Dashboard")}
           >
             Sign Up
           </button>

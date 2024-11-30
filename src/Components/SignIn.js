@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const SignIn = () => {
+    const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -120,6 +122,7 @@ const SignIn = () => {
             onMouseOut={(e) =>
               (e.target.style.backgroundColor = styles.button.backgroundColor)
             }
+            onClick={() => navigate("/Dashboard")}
           >
             Sign In
           </button>
