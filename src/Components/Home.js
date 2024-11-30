@@ -1,6 +1,9 @@
-import React from 'react';
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
-const HomePage = () => {
+const Home = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="home-page">
       <style>
@@ -56,42 +59,121 @@ const HomePage = () => {
           .trackers-section {
             padding: 50px 0;
             background-color: #f9f9f9;
+            position: relative;
           }
-          
+
           .carousel-container {
-            overflow-x: scroll;
-            display: flex;
-            scroll-snap-type: x mandatory;
-            scroll-behavior: smooth;
-            padding: 0 10px;
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            overflow: hidden;
           }
-          
+
           .carousel {
             display: flex;
-            gap: 20px;
-            width: 100%;
+            transition: transform 0.8s ease-in-out;
+            animation: slide 10s infinite;
           }
-          
+
           .carousel-item {
-            flex: 0 0 80%;
+            flex: 0 0 100%;
             text-align: center;
             padding: 20px;
-            background: hsla(235, 23%, 54%, 0.941);
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(135deg, #4a90e2, #9013fe);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
             border-radius: 10px;
-            scroll-snap-align: start;
+            color: white;
+            transform: scale(0.9);
+            transition: transform 0.5s ease-in-out;
           }
-          
+
           .carousel-item h2 {
             font-size: 2em;
-            color: #111213;
+            color: #ffffff;
+            margin-bottom: 10px;
+            animation: fadeIn 1s ease-in-out;
           }
-          
+
           .carousel-item p {
             font-size: 1.2em;
             margin-top: 10px;
-            color: #555;
+            color: #eaeaea;
+            animation: fadeIn 1.5s ease-in-out;
           }
+
+          .carousel-item.active {
+            transform: scale(1);
+          }
+
+          @keyframes fadeIn {
+            from {
+              opacity: 0;
+              transform: translateY(10px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+
+          @keyframes slide {
+            0% {
+              transform: translateX(0%);
+            }
+            33% {
+              transform: translateX(-100%);
+            }
+            66% {
+              transform: translateX(-200%);
+            }
+            100% {
+              transform: translateX(0%);
+            }
+          }
+
+          .carousel-navigation {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+          }
+
+          .carousel-button {
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 1.5em;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: background 0.3s;
+          }
+
+          .carousel-button:hover {
+            background: rgba(0, 0, 0, 0.8);
+          }
+
+          .carousel-indicators {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+          }
+
+          .carousel-indicator {
+            width: 10px;
+            height: 10px;
+            margin: 0 5px;
+            background: #ddd;
+            border-radius: 50%;
+            transition: background 0.3s;
+          }
+
+          .carousel-indicator.active {
+            background: #4a90e2;
+          }
+
           
           /* Get Started Section */
           .get-started-section {
@@ -148,6 +230,7 @@ const HomePage = () => {
           }
         `}
       </style>
+
       {/* Welcome Section */}
       <section className="welcome-section">
         <div className="welcome-content">
@@ -170,33 +253,54 @@ const HomePage = () => {
         <div className="carousel-container">
           <div className="carousel">
             <div className="carousel-item">
-              <h2>💰 Budgeting</h2>
-              <p>Plan your finances effectively.</p>
+              <h2>💰 Budget Planning</h2>
+              <p>Set realistic financial goals and stick to them.</p>
             </div>
             <div className="carousel-item">
-              <h2>📊 Expenses</h2>
-              <p>Track your daily expenses seamlessly.</p>
+              <h2>📊 Expense Insights</h2>
+              <p>Understand where your money goes at a glance.</p>
             </div>
             <div className="carousel-item">
-              <h2>💼 Income tracking</h2>
-              <p>Track your income rates.</p>
+              <h2>💼 Income Management</h2>
+              <p>Track earnings and make informed decisions.</p>
             </div>
           </div>
         </div>
       </section>
-      
+
+      {/* Get Started Section */}
+      <section className="get-started-section">
+        <button
+          className="get-started-btn"
+          onClick={() => navigate("/signup")}
+        >
+          Get Started
+        </button>
+      </section>
+
+      <section className="get-started-section">
+        <button
+          className="get-started-btn"
+          onClick={() => navigate("/SignIn")}
+        >
+          Sign In
+        </button>
+      </section>
 
       {/* Footer Section */}
       <footer className="footer-section">
         <h3>About Us</h3>
-        
         <p>
           Sente Sense is here to simplify personal finance management. Stay in control 
           of your budget, expenses, and savings — all in one app.
         </p>
+        <h3>Contact Us</h3>
+        <p>Email: support@sentesense.com</p>
+        <p>Phone: +256 111 234234</p>
       </footer>
     </div>
   );
 };
 
-export default HomePage;
+export default Home;
+
