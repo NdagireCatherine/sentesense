@@ -5,13 +5,12 @@
 }
 
 
-
 a{
   text-decoration: none;
 }
 
 header{
-  background: rgb(0, 238, 255);
+  background: #fff;
   box-shadow: 0 0 5px ;
   padding: 1rem 0rem;
 }
