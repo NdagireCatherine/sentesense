@@ -76,7 +76,7 @@ ON EXPENSES (Expense_date);
 CREATE INDEX Expense_category
 ON EXPENSES(User_Id);
 
-SHOW TABLES;
+SHOW TABLES; 
 
 INSERT INTO USERS (User_Id, Name, Email, Password)
 VALUES (001,'Emmanuel Magomu','ehmahmagomu7@gmail.com',24680),
