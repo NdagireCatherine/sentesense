@@ -1,8 +1,50 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
     const navigate = useNavigate();
+    const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [preferredUserName, setPreferredUserName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setSuccess('');
+
+    try {
+      const response = await fetch('http://localhost:5000/api/auth/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          firstName, 
+          lastName, 
+          preferredUserName, 
+          email, 
+          password 
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to sign up');
+      }
+
+      const data = await response.json();
+      setSuccess('Sign up successful! Please log in.');
+      // Redirect or update state as needed
+      navigate("/login"); // Redirect to login page after successful signup
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
   const styles = {
     container: {
       display: "flex",

@@ -43,3 +43,25 @@ export const loginUser  = async (username, password) => {
     throw error;
   }
 };  
+
+export const SignUpUser  = async (User_Id, FirstName, LastName, PreferredUserName, Email, Password ) => {
+  try {
+    const response = await fetch("http://localhost:5000/api/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ User_Id, FirstName, LastName, PreferredUserName, Email, Password  }), // Send username and password as JSON
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to sign in");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error signing in:", error);
+    throw error;
+  }
+};  
