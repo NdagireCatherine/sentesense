@@ -27,3 +27,5 @@ If you already have the package.json file in your directory use the command: **n
 The next steps are to create the necesssary files and folders under the Src folders to turn it from a basic react front end application into a custom project in this case a personal finance app
 
 This web application has been designed to empower individuals to manage their personal finances by constantly tracking their income and expenses thus help helping to make informed financial decisions and achieve a higher degree of financial freedom
+
+Still Some issues creating API requests from the front end to the back end
