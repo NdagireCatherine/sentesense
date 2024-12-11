@@ -1,3 +1,4 @@
+//Needs more work to actually get it to work
 const cron = require('node-cron');
 const db = require('../Models/db');
 
